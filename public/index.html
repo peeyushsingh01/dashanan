@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dashaanan</title>
+<meta name="theme-color" content="#F3E0A0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='20' fill='%23D9A520'/%3E%3Ccircle cx='24' cy='24' r='8' fill='%23FFF3C4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Marcellus&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g50:#FFF8E1; --g100:#FBECBB; --g200:#F3DB8A; --g300:#E8C25A; --g400:#D9A520;
+  --g500:#B8860B; --g700:#7A5A0C; --g900:#3B2A06;
+  --blue:#1E4FD6; --blue-ink:#FFF8E1;
+  --bg:var(--g50); --bg-glow:#F7E3A1; --surface:#FFFDF3; --line:#E3C46A; --line-soft:#EFD995;
+  --ink:var(--g900); --mut:#8A6C1E; --user-a:#F0CB55; --user-b:#D9A520; --user-ink:#2A1D03;
+  --display:'Marcellus',Georgia,'Times New Roman',serif;
+  --body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#150F03; --bg-glow:#33240A; --surface:#231905; --line:#6B4F12; --line-soft:#4A360C;
+  --ink:#F8EBC0; --mut:#C2A65A; --blue:#7BA0FF; --blue-ink:#0E1B45;
+  --user-a:#E8C25A; --user-b:#C9971C;
+}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font:16px/1.55 var(--body);color:var(--ink);display:flex;flex-direction:column;
+  background:radial-gradient(120% 60% at 50% -10%,var(--bg-glow),var(--bg) 60%);
+  padding-top:env(safe-area-inset-top,0px)}
+header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line-soft)}
+.logo{width:34px;height:34px;flex:none}
+.logo .core{fill:var(--g400)} .logo .rays line{stroke:var(--g500);stroke-width:3;stroke-linecap:round}
+@media(prefers-color-scheme:dark){.logo .core{fill:#E8C25A}.logo .rays line{stroke:#D9A520}}
+h1{font:400 26px/1 var(--display);margin:0;letter-spacing:.02em;flex:1}
+#keybtn{background:none;border:1px solid var(--line);color:var(--mut);border-radius:10px;width:38px;height:38px;display:grid;place-items:center}
+#keyrow{display:none;padding:8px 16px;border-bottom:1px solid var(--line-soft)}
+#keyrow.on{display:block}
+#keyrow input{width:100%}
+input,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px 13px;outline:none}
+input::placeholder,textarea::placeholder{color:var(--mut);opacity:.8}
+#log{flex:1;overflow:auto;padding:8px 16px 16px;scroll-behavior:smooth}
+.empty{padding:36px 4px 8px}
+.empty .logo{width:68px;height:68px}
+.empty h2{font:400 32px/1.15 var(--display);margin:14px 0 6px}
+.empty p{margin:0 0 22px;color:var(--mut);max-width:34ch}
+.starts{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-soft)}
+.starts button{all:unset;box-sizing:border-box;display:block;width:100%;padding:14px 2px;border-bottom:1px solid var(--line-soft);cursor:pointer}
+.starts button:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+.starts b{display:block;font-weight:600}.starts span{color:var(--mut);font-size:14px}
+.m{max-width:88%;margin:12px 0;padding:11px 14px;border-radius:18px;white-space:pre-wrap;overflow-wrap:anywhere}
+.u{margin-left:auto;background:linear-gradient(135deg,var(--user-a),var(--user-b));color:var(--user-ink);border-bottom-right-radius:6px;font-weight:500}
+.a{background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:6px;max-width:100%}
+.a img,.a video{display:block;max-width:100%;border-radius:12px;margin-top:10px;border:1px solid var(--line)}
+.a audio{width:100%;margin-top:10px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pill{font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--mut);background:var(--bg)}
+.pill.ok{border-color:var(--blue);color:var(--blue)}
+.src{margin-top:8px;font-size:13px;display:flex;flex-direction:column;gap:2px}
+.src a{color:var(--blue);text-decoration:underline;text-underline-offset:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.think{display:flex;align-items:center;gap:10px;color:var(--mut)}
+.think .logo{width:26px;height:26px}
+.think .rays line{animation:glow 1.6s ease-in-out infinite;animation-delay:calc(var(--i)*.16s)}
+@keyframes glow{0%,100%{opacity:.25}40%{opacity:1}}
+form{display:flex;gap:8px;align-items:flex-end;padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line-soft);background:linear-gradient(0deg,var(--bg),transparent)}
+textarea{flex:1;resize:none;max-height:140px;min-height:46px;line-height:1.4}
+textarea:focus,input:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 25%,transparent)}
+#send{width:46px;height:46px;flex:none;border:0;border-radius:14px;background:var(--blue);color:var(--blue-ink);display:grid;place-items:center;cursor:pointer}
+#send:disabled{opacity:.5}
+
+.a{white-space:normal}
+.md>:first-child{margin-top:0}.md>:last-child{margin-bottom:0}
+.md p{margin:.55em 0}
+.md h3,.md h4,.md h5{font-family:var(--display);font-weight:400;line-height:1.25;margin:1em 0 .35em}
+.md h3{font-size:21px}.md h4{font-size:18px}.md h5{font-size:16px}
+.md ul,.md ol{margin:.5em 0;padding-left:1.3em}.md li{margin:.25em 0}.md li::marker{color:var(--g500)}
+.md strong{font-weight:600}
+.md code{font:13.5px ui-monospace,Menlo,Consolas,monospace;background:color-mix(in srgb,var(--line) 28%,transparent);padding:1px 5px;border-radius:6px}
+.md pre{background:color-mix(in srgb,var(--line) 22%,var(--surface));border:1px solid var(--line-soft);border-radius:12px;padding:10px 12px;overflow-x:auto;margin:.7em 0}
+.md pre code{background:none;padding:0}
+.md blockquote{margin:.7em 0;padding:2px 0 2px 12px;border-left:3px solid var(--g400);color:var(--mut)}
+.md hr{border:0;border-top:1px solid var(--line);margin:1em 0}
+.md a{color:var(--blue);text-underline-offset:2px}
+.tw{overflow-x:auto;margin:.7em 0;border:1px solid var(--line);border-radius:12px}
+.tw table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.4}
+.tw th,.tw td{padding:8px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line-soft);min-width:120px}
+.tw th{background:color-mix(in srgb,var(--line) 30%,var(--surface));font-weight:600;white-space:nowrap}
+.tw tr:last-child td{border-bottom:0}
+@media(prefers-reduced-motion:reduce){.think .rays line{animation:none;opacity:.8}#log{scroll-behavior:auto}}
+</style></head><body>
+<header>
+  <svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><circle class="core" cx="24" cy="24" r="8.5"/><g class="rays"><line x1="24" y1="4" x2="24" y2="12" transform="rotate(0 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(36 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(72 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(108 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(144 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(180 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(216 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(252 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(288 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(324 24 24)"/></g></svg>
+  <h1>Dashaanan</h1>
+  <button id="keybtn" type="button" aria-label="Set access key" title="Access key">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/></svg>
+  </button>
+</header>
+<div id="keyrow"><input id="key" type="password" placeholder="Access key (only if you set one)" autocomplete="off"></div>
+<main id="log" aria-live="polite">
+  <section class="empty" id="empty">
+    <svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><circle class="core" cx="24" cy="24" r="8.5"/><g class="rays"><line x1="24" y1="4" x2="24" y2="12" transform="rotate(0 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(36 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(72 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(108 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(144 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(180 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(216 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(252 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(288 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(324 24 24)"/></g></svg>
+    <h2>Ask Dashaanan</h2>
+    <p>Research, markets, live incidents, images, audio and video, checked by four independent models.</p>
+    <ul class="starts">
+      <li><button type="button" data-q="Research the latest progress in solid-state batteries"><b>Research a topic</b><span>Sourced answer from web, papers and news</span></button></li>
+      <li><button type="button" data-q="Analyze AAPL: technicals and fundamentals"><b>Analyze a stock</b><span>Trend, momentum and key metrics</span></button></li>
+      <li><button type="button" data-q="Draw a golden temple at sunrise"><b>Make an image</b><span>Generated from your description</span></button></li>
+      <li><button type="button" data-q="What major incidents are happening right now?"><b>Track incidents</b><span>Disasters, outages and major events</span></button></li>
+    </ul>
+  </section>
+</main>
+<form id="f">
+  <textarea id="q" rows="1" placeholder="Message Dashaanan" autocomplete="off" enterkeyhint="send"></textarea>
+  <button id="send" aria-label="Send message"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+</form>
+<script>
+const $=id=>document.getElementById(id),log=$('log'),q=$('q'),send=$('send'),key=$('key'),hist=[];
+const EMB=`<svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><circle class="core" cx="24" cy="24" r="8.5"/><g class="rays"><line x1="24" y1="4" x2="24" y2="12" transform="rotate(0 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(36 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(72 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(108 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(144 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(180 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(216 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(252 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(288 24 24)"/><line x1="24" y1="4" x2="24" y2="12" transform="rotate(324 24 24)"/></g></svg>`;
+try{key.value=localStorage.getItem('dk')||''}catch(e){}
+$('keybtn').onclick=()=>$('keyrow').classList.toggle('on');
+key.onchange=()=>{try{localStorage.setItem('dk',key.value)}catch(e){}};
+q.oninput=()=>{q.style.height='auto';q.style.height=Math.min(q.scrollHeight,140)+'px'};
+q.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('f').requestSubmit()}};
+document.querySelectorAll('.starts button').forEach(b=>b.onclick=()=>{q.value=b.dataset.q;$('f').requestSubmit()});
+function el(t,c,txt){const d=document.createElement(t);if(c)d.className=c;if(txt!=null)d.textContent=txt;return d}
+function bottom(){log.scrollTop=log.scrollHeight}
+function thinking(){const d=el('div','m a think');d.innerHTML=EMB;d.querySelectorAll('.rays line').forEach((l,i)=>l.style.setProperty('--i',i));d.appendChild(el('span',null,'Consulting the agents…'));return d}
+
+function link(parent,label,url){if(!/^https?:\/\//.test(url)){parent.appendChild(document.createTextNode(label));return}
+  const a=el('a',null,label);a.href=url;a.target='_blank';a.rel='noopener noreferrer';parent.appendChild(a)}
+function inline(text,parent){
+  const re=/(`[^`]+`)|(\*\*[^*]+\*\*)|(__[^_]+__)|(\*[^*\s][^*]*\*)|(\[[^\]]+\]\(https?:\/\/[^\s)]+\))|(https?:\/\/[^\s<)]+)/g;
+  let last=0,m;
+  while((m=re.exec(text))){
+    if(m.index>last)parent.appendChild(document.createTextNode(text.slice(last,m.index)));
+    const t=m[0];
+    if(m[1])parent.appendChild(el('code',null,t.slice(1,-1)));
+    else if(m[2]||m[3]){const b=el('strong');inline(t.slice(2,-2),b);parent.appendChild(b)}
+    else if(m[4]){const i=el('em');inline(t.slice(1,-1),i);parent.appendChild(i)}
+    else if(m[5]){const mm=/\[([^\]]+)\]\((.+)\)/.exec(t);link(parent,mm[1],mm[2])}
+    else link(parent,t,t);
+    last=m.index+t.length;
+  }
+  if(last<text.length)parent.appendChild(document.createTextNode(text.slice(last)));
+}
+const RE_LIST=/^\s*([-*+]|\d+[.)])\s+/,RE_HR=/^\s*([-*_])(\s*\1){2,}\s*$/,RE_TSEP=/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/;
+const cells=r=>r.trim().replace(/^\||\|$/g,'').split('|').map(c=>c.trim());
+function md(src){
+  const root=el('div','md'),L=String(src||'').replace(/\r/g,'').split('\n');let i=0;
+  const starts=l=>/^```/.test(l)||/^#{1,4}\s/.test(l)||RE_LIST.test(l)||/^\s*>/.test(l)||RE_HR.test(l);
+  while(i<L.length){
+    const ln=L[i];
+    if(!ln.trim()){i++;continue}
+    if(/^```/.test(ln)){const buf=[];i++;while(i<L.length&&!/^```/.test(L[i]))buf.push(L[i++]);i++;
+      const pre=el('pre');pre.appendChild(el('code',null,buf.join('\n')));root.appendChild(pre);continue}
+    const h=/^(#{1,4})\s+(.*)$/.exec(ln);
+    if(h){const e=el('h'+Math.min(h[1].length+2,5));inline(h[2],e);root.appendChild(e);i++;continue}
+    if(RE_HR.test(ln)){root.appendChild(el('hr'));i++;continue}
+    if(ln.includes('|')&&i+1<L.length&&RE_TSEP.test(L[i+1])&&L[i+1].includes('-')){
+      const head=cells(ln);i+=2;const rows=[];
+      while(i<L.length&&L[i].includes('|')&&L[i].trim())rows.push(cells(L[i++]));
+      const w=el('div','tw'),t=el('table'),th=el('thead'),tr=el('tr');
+      head.forEach(c=>{const x=el('th');inline(c,x);tr.appendChild(x)});th.appendChild(tr);t.appendChild(th);
+      const tb=el('tbody');rows.forEach(r=>{const y=el('tr');head.forEach((_,k)=>{const x=el('td');inline(r[k]||'',x);y.appendChild(x)});tb.appendChild(y)});
+      t.appendChild(tb);w.appendChild(t);root.appendChild(w);continue}
+    if(/^\s*>/.test(ln)){const buf=[];while(i<L.length&&/^\s*>/.test(L[i]))buf.push(L[i++].replace(/^\s*>\s?/,''));
+      const b=el('blockquote');inline(buf.join(' '),b);root.appendChild(b);continue}
+    if(RE_LIST.test(ln)){const ord=/^\s*\d/.test(ln),list=el(ord?'ol':'ul');
+      while(i<L.length&&RE_LIST.test(L[i])){const li=el('li');inline(L[i].replace(RE_LIST,''),li);list.appendChild(li);i++}
+      root.appendChild(list);continue}
+    const buf=[];while(i<L.length&&L[i].trim()&&!starts(L[i])&&!(L[i].includes('|')&&i+1<L.length&&RE_TSEP.test(L[i+1])))buf.push(L[i++]);
+    if(!buf.length){buf.push(L[i++])}
+    const p=el('p');buf.forEach((t,k)=>{if(k)p.appendChild(el('br'));inline(t,p)});root.appendChild(p);
+  }
+  return root;
+}
+const LABEL={compressor:'Router',research:'Research ×4',stock:'Stock ×2',incident:'Incident tracker',image:'Image ×2',audio:'Audio ×2',video:'Video ×2',talker:'Talker',revision:'Revised'};
+function render(box,j){
+  box.className='m a';box.textContent='';
+  box.appendChild(md(j.answer));
+  (j.media||[]).forEach(m=>{const s=m.url||m.data_uri;if(!s)return;
+    const x=document.createElement(m.type==='image'?'img':m.type==='audio'?'audio':'video');
+    x.src=s;if(m.type==='image'){x.alt='Generated image';x.loading='lazy'}else x.controls=true;box.appendChild(x)});
+  if(j.sources&&j.sources.length){const s=el('div','src');
+    j.sources.slice(0,4).forEach(r=>{if(!/^https?:/.test(r.url||''))return;const a=el('a',null,r.title||r.url);a.href=r.url;a.target='_blank';a.rel='noopener noreferrer';s.appendChild(a)});box.appendChild(s)}
+  const meta=el('div','meta');
+  (j.trace||[]).forEach(t=>{if(t.step==='validators')return;if(LABEL[t.step])meta.appendChild(el('span','pill',LABEL[t.step]))});
+  if(j.validation){const p=j.validation.votes.filter(v=>v.verdict==='pass').length;
+    meta.appendChild(el('span','pill ok','Validators '+p+'/'+j.validation.votes.length+(j.validation.passed?' passed':' flagged')))}
+  if(meta.children.length)box.appendChild(meta);
+}
+$('f').onsubmit=async e=>{e.preventDefault();const msg=q.value.trim();if(!msg||send.disabled)return;
+  const em=$('empty');if(em)em.remove();
+  q.value='';q.style.height='auto';send.disabled=true;
+  log.appendChild(el('div','m u',msg));const w=thinking();log.appendChild(w);bottom();
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'content-type':'application/json','x-api-key':key.value},
+      body:JSON.stringify({message:msg,history:hist.slice(-6)})});
+    const raw=await r.text();let j;
+    try{j=JSON.parse(raw)}catch(_){throw new Error(/TIMEOUT|timed out/i.test(raw)||r.status===504?'The request ran past the server time limit. Try a narrower question.':'The server sent an unexpected reply (HTTP '+r.status+').')}
+    if(!r.ok)throw new Error(r.status===401?'Access key missing or wrong. Tap the key icon to enter it.':(j.detail||('Request failed ('+r.status+')')));
+    render(w,j);hist.push({role:'user',content:msg},{role:'assistant',content:j.answer});
+  }catch(err){w.className='m a';w.textContent=err.message}
+  send.disabled=false;bottom();q.focus();
+};
+</script></body></html>
